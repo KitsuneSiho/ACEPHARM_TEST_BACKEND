@@ -36,7 +36,7 @@ public class UserService {
 
         // 아이디 중복 확인
         if (userRepository.existsByUserID(requestDto.getUserID())) {
-            throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+            throw new IllegalArgumentException(requestDto.getUserID() + " 는 이미 사용중인 아이디입니다.");
         }
 
         // 사업자 번호 중복 확인

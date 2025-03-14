@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+import com.example.project.dto.ErrorResponseDto;
 import com.example.project.dto.RegisterRequestDto;
 import com.example.project.dto.RegisterResponseDto;
 import com.example.project.service.UserService;
@@ -28,9 +29,19 @@ public class UserController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
         }catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            // JSON 형식으로 오류 메시지 반환
+            ErrorResponseDto errorResponse = ErrorResponseDto.builder()
+                    .message(e.getMessage())
+                    .status(HttpStatus.BAD_REQUEST.value())
+                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 중 오류가 발생했습니다.");
+            // JSON 형태로 오류 메시지 반환
+            ErrorResponseDto errorResponse = ErrorResponseDto.builder()
+                    .message("회원가입중 오류가 발생했습니다.")
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }
